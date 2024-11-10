@@ -28,22 +28,22 @@ CLASS zcl_ahr_ac1_lab_04_message IMPLEMENTATION.
 
   METHOD if_oo_adt_classrun~main.
 
-**********************************************************************
+*********************************************************************
 *1. Símbolos de texto
-*    me->text_symbol( out ).
-**
-**********************************************************************
+    me->text_symbol( out ).
+*
+*********************************************************************
 *2. Funciones de descripción
-*    me->description_functions( out ).
-*
-**********************************************************************
+    me->description_functions( out ).
+
+*********************************************************************
 *3. Funciones de procesamiento
-*    me->processing_functions( out ).
-*
-**********************************************************************
+    me->processing_functions( out ).
+
+*********************************************************************
 *4. Funciones de contenido
-*    me->content_functions( out ).
-*
+    me->content_functions( out ).
+
 **********************************************************************
 *5. Funciones con expresiones regulares
     me->functions_regular_expressions( out ).
