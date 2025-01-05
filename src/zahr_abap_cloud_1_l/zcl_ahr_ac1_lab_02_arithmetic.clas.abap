@@ -11,7 +11,8 @@ ENDCLASS.
 
 
 
-CLASS zcl_ahr_ac1_lab_02_arithmetic IMPLEMENTATION.
+CLASS ZCL_AHR_AC1_LAB_02_ARITHMETIC IMPLEMENTATION.
+
 
   METHOD if_oo_adt_classrun~main.
 
@@ -96,5 +97,4 @@ CLASS zcl_ahr_ac1_lab_02_arithmetic IMPLEMENTATION.
     out->write( |La raiz cuadrada de  { lv_expo } es: { lv_square_root } | ).
 
   ENDMETHOD.
-
 ENDCLASS.

@@ -10,8 +10,8 @@ CLASS zcl_ahr_ac1_lab_01_var DEFINITION
 ENDCLASS.
 
 
-
 CLASS zcl_ahr_ac1_lab_01_var IMPLEMENTATION.
+
 
   METHOD if_oo_adt_classrun~main.
 
@@ -111,5 +111,4 @@ CLASS zcl_ahr_ac1_lab_01_var IMPLEMENTATION.
     DATA(lv_bar_code) = mc_bar_code.
 
   ENDMETHOD.
-
 ENDCLASS.

@@ -17,7 +17,7 @@ ENDCLASS.
 
 
 
-CLASS zcl_ahr_ac1_lab_03_datatypes IMPLEMENTATION.
+CLASS ZCL_AHR_AC1_LAB_03_DATATYPES IMPLEMENTATION.
 
 
   METHOD if_oo_adt_classrun~main.
@@ -104,5 +104,4 @@ CLASS zcl_ahr_ac1_lab_03_datatypes IMPLEMENTATION.
     out->write( mv_timestamp ).
 
   ENDMETHOD.
-
 ENDCLASS.

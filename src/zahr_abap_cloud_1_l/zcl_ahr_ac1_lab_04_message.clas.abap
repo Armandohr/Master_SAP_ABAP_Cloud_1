@@ -1,7 +1,6 @@
 CLASS zcl_ahr_ac1_lab_04_message DEFINITION
-  PUBLIC
-  FINAL
-  CREATE PUBLIC .
+  PUBLIC FINAL
+  CREATE PUBLIC.
 
   PUBLIC SECTION.
 
@@ -10,51 +9,39 @@ CLASS zcl_ahr_ac1_lab_04_message DEFINITION
   PROTECTED SECTION.
 
   PRIVATE SECTION.
+    DATA lv_order_status TYPE string VALUE 'Purchase Completed! Successfully'.
+    DATA lv_char_number  TYPE i.
 
-    DATA:
-      lv_order_status TYPE string VALUE 'Purchase Completed! Successfully',
-      lv_char_number  TYPE i.
-
-    METHODS:
-      Functions_Regular_Expressions IMPORTING io_out TYPE REF TO if_oo_adt_classrun_out,
-      Content_functions IMPORTING io_out TYPE REF TO if_oo_adt_classrun_out,
-      Processing_functions IMPORTING io_out TYPE REF TO if_oo_adt_classrun_out,
-      Description_Functions IMPORTING io_out TYPE REF TO if_oo_adt_classrun_out,
-      Text_Symbol IMPORTING io_out TYPE REF TO if_oo_adt_classrun_out.
+    METHODS Functions_Regular_Expressions IMPORTING io_out TYPE REF TO if_oo_adt_classrun_out.
+    METHODS Content_functions             IMPORTING io_out TYPE REF TO if_oo_adt_classrun_out.
+    METHODS Processing_functions          IMPORTING io_out TYPE REF TO if_oo_adt_classrun_out.
+    METHODS Description_Functions         IMPORTING io_out TYPE REF TO if_oo_adt_classrun_out.
+    METHODS Text_Symbol                   IMPORTING io_out TYPE REF TO if_oo_adt_classrun_out.
 
 ENDCLASS.
 
-CLASS zcl_ahr_ac1_lab_04_message IMPLEMENTATION.
 
-  METHOD if_oo_adt_classrun~main.
 
-*********************************************************************
-*1. Símbolos de texto
-    me->text_symbol( out ).
-*
-*********************************************************************
-*2. Funciones de descripción
-    me->description_functions( out ).
+CLASS ZCL_AHR_AC1_LAB_04_MESSAGE IMPLEMENTATION.
 
-*********************************************************************
-*3. Funciones de procesamiento
-    me->processing_functions( out ).
 
-*********************************************************************
-*4. Funciones de contenido
-    me->content_functions( out ).
+  METHOD content_functions.
 
-**********************************************************************
-*5. Funciones con expresiones regulares
-    me->functions_regular_expressions( out ).
+    DATA:
+      lv_pattern TYPE string VALUE '\d{3}-\d{3}-\d{4}',
+      lv_phone   TYPE string VALUE '555-658-1111'.
+
+    IF contains( val = lv_phone pcre = lv_pattern ).
+      io_out->write( |La cadena: { lv_phone } SI corresponde al formato { lv_pattern } valido| ).
+    ELSE.
+      io_out->write( |La cadena: { lv_phone } NO corresponde al formato { lv_pattern } valido| ).
+    ENDIF.
+
+    DATA(lv_number) = match( val = lv_phone pcre = lv_pattern ).
+    io_out->write( lv_number ).
 
   ENDMETHOD.
 
-  METHOD text_symbol.
-
-    io_out->write( TEXT-001 ).
-
-  ENDMETHOD.
 
   METHOD description_functions.
 
@@ -85,6 +72,47 @@ CLASS zcl_ahr_ac1_lab_04_message IMPLEMENTATION.
 *    out->write( me->lv_char_number ).
 
   ENDMETHOD.
+
+
+  METHOD functions_regular_expressions.
+
+    DATA:
+      lv_pattern TYPE string VALUE '\b[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[A-Z|a-z]{2,}\b',
+      lv_email   TYPE string VALUE 'angel.fernandez@yahoo.com'.
+
+    IF contains( val = lv_email pcre = lv_pattern ).
+      io_out->write( |La cadena: { lv_email } SI corresponde a un Email valido| ).
+    ELSE.
+      io_out->write( |La cadena: { lv_email } NO corresponde a un Email valido| ).
+    ENDIF.
+
+  ENDMETHOD.
+
+
+  METHOD if_oo_adt_classrun~main.
+
+*********************************************************************
+*1. Símbolos de texto
+    me->text_symbol( out ).
+*
+*********************************************************************
+*2. Funciones de descripción
+    me->description_functions( out ).
+
+*********************************************************************
+*3. Funciones de procesamiento
+    me->processing_functions( out ).
+
+*********************************************************************
+*4. Funciones de contenido
+    me->content_functions( out ).
+
+**********************************************************************
+*5. Funciones con expresiones regulares
+    me->functions_regular_expressions( out ).
+
+  ENDMETHOD.
+
 
   METHOD processing_functions.
 
@@ -127,35 +155,10 @@ CLASS zcl_ahr_ac1_lab_04_message IMPLEMENTATION.
 
   ENDMETHOD.
 
-  METHOD content_functions.
 
-    DATA:
-      lv_pattern TYPE string VALUE '\d{3}-\d{3}-\d{4}',
-      lv_phone   TYPE string VALUE '555-658-1111'.
+  METHOD text_symbol.
 
-    IF contains( val = lv_phone pcre = lv_pattern ).
-      io_out->write( |La cadena: { lv_phone } SI corresponde al formato { lv_pattern } valido| ).
-    ELSE.
-      io_out->write( |La cadena: { lv_phone } NO corresponde al formato { lv_pattern } valido| ).
-    ENDIF.
-
-    DATA(lv_number) = match( val = lv_phone pcre = lv_pattern ).
-    io_out->write( lv_number ).
+    io_out->write( TEXT-001 ).
 
   ENDMETHOD.
-
-  METHOD functions_regular_expressions.
-
-    DATA:
-      lv_pattern TYPE string VALUE '\b[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[A-Z|a-z]{2,}\b',
-      lv_email   TYPE string VALUE 'angel.fernandez@yahoo.com'.
-
-    IF contains( val = lv_email pcre = lv_pattern ).
-      io_out->write( |La cadena: { lv_email } SI corresponde a un Email valido| ).
-    ELSE.
-      io_out->write( |La cadena: { lv_email } NO corresponde a un Email valido| ).
-    ENDIF.
-
-  ENDMETHOD.
-
 ENDCLASS.
