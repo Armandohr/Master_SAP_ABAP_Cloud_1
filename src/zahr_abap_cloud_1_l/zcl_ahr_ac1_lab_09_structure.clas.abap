@@ -1,13 +1,11 @@
 CLASS zcl_ahr_ac1_lab_09_structure DEFINITION
   PUBLIC FINAL
-  CREATE PUBLIC .
+  CREATE PUBLIC.
 
   PUBLIC SECTION.
-
-    INTERFACES if_oo_adt_classrun .
+    INTERFACES if_oo_adt_classrun.
 
     " 1.  Declaración estructuras:
-
     TYPES: BEGIN OF ty_flights,
              iduser     TYPE c LENGTH 40,
              aircode    TYPE /dmo/carrier_id,
@@ -15,9 +13,9 @@ CLASS zcl_ahr_ac1_lab_09_structure DEFINITION
              key        TYPE land1,
              seat       TYPE /dmo/plane_seats_occupied,
              flightdate TYPE /dmo/flight_date,
-           END OF ty_flights,
+           END OF ty_flights.
 
-           BEGIN OF ty_airlines,
+    TYPES: BEGIN OF ty_airlines,
              carrid    TYPE /dmo/carrier_id,
              connid    TYPE /dmo/connection_id,
              countryfr TYPE land1,
@@ -35,24 +33,19 @@ CLASS zcl_ahr_ac1_lab_09_structure DEFINITION
     TYPES: BEGIN OF ty_deep,
              carrid  TYPE /dmo/carrier_id,
              connid  TYPE /dmo/connection_id,
-             flights TYPE STANDARD TABLE OF ty_flights  WITH EMPTY KEY,
+             flights TYPE STANDARD TABLE OF ty_flights WITH EMPTY KEY,
            END OF ty_deep.
 
     " 5.    Estructura INCLUDE
     TYPES BEGIN OF ty_include_flights.
-    INCLUDE TYPE ty_flights AS fli.
-    INCLUDE TYPE ty_airlines AS aero RENAMING WITH SUFFIX _aero.
+            INCLUDE TYPE ty_flights AS fli.
+            INCLUDE TYPE ty_airlines AS aero RENAMING WITH SUFFIX _aero.
     TYPES END OF ty_include_flights.
 
-
-  PROTECTED SECTION.
-
   PRIVATE SECTION.
-
-    DATA:
-      ls_nested          TYPE ty_nested,
-      ls_deep            TYPE ty_deep,
-      ls_include_flights TYPE ty_include_flights.
+    DATA ls_nested          TYPE ty_nested.
+    DATA ls_deep            TYPE ty_deep.
+    DATA ls_include_flights TYPE ty_include_flights.
 
 ENDCLASS.
 
@@ -94,6 +87,7 @@ CLASS zcl_ahr_ac1_lab_09_structure IMPLEMENTATION.
                                   aero-carrid = 'ZZ' ).
     out->write( data = ls_include_flights name = 'Include structure' ).
     out->write( |\n| ).
+
     " 6.    Eliminar datos
     CLEAR: ls_nested,
             ls_deep.
