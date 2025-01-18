@@ -4,8 +4,8 @@ CLASS zcl_ahr_ac1_emp_logali DEFINITION
   CREATE PUBLIC .
 
   PUBLIC SECTION.
+    INTERFACES if_oo_adt_classrun.
 
-    INTERFACES if_oo_adt_classrun .
   PROTECTED SECTION.
   PRIVATE SECTION.
 ENDCLASS.
@@ -13,10 +13,11 @@ ENDCLASS.
 
 
 CLASS zcl_ahr_ac1_emp_logali IMPLEMENTATION.
+
   METHOD if_oo_adt_classrun~main.
 
     DATA lt_ahr_emp_logali TYPE STANDARD TABLE OF zahr_emp_logali.
-
+*
     DELETE FROM zahr_emp_logali.
 
     lt_ahr_emp_logali = VALUE #( client = sy-mandt
