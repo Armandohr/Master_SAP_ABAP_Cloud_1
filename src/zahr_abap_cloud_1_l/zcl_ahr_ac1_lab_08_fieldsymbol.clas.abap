@@ -162,7 +162,7 @@ CLASS zcl_ahr_ac1_lab_08_fieldsymbol IMPLEMENTATION.
     io_out->write( to_upper( |--> coercion_casting <--| ) ).
 
     DATA: lv_date TYPE d.
-    FIELD-SYMBOLS: <lf_date> TYPE I.
+    FIELD-SYMBOLS: <lf_date> TYPE n.
 
     ASSIGN lv_date TO <lf_date> CASTING.
 
