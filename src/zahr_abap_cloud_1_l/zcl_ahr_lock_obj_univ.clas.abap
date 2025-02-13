@@ -10,6 +10,9 @@ CLASS zcl_ahr_lock_obj_univ DEFINITION
 
   PRIVATE SECTION.
 
+    METHODS lock_object_univ IMPORTING io_out TYPE REF TO if_oo_adt_classrun_out.
+    METHODS sql_query_univ IMPORTING io_out TYPE REF TO if_oo_adt_classrun_out.
+
 ENDCLASS.
 
 
@@ -18,15 +21,22 @@ CLASS zcl_ahr_lock_obj_univ IMPLEMENTATION.
 
   METHOD if_oo_adt_classrun~main.
 
+    lock_object_univ( io_out = out ).
 
-    out->write( |User has started the business process| ).
+    sql_query_univ( io_out = out ).
+
+  ENDMETHOD.
+
+  METHOD lock_object_univ.
+
+    io_out->write( |User has started the business process| ).
 
     TRY.
         DATA(lo_lock_object) = cl_abap_lock_object_factory=>get_instance(
           EXPORTING
             iv_name = 'EZ_AHR_UNIV_LOCK' ).
       CATCH cx_abap_lock_failure.
-        out->write( |Lock object instance not created| ).
+        io_out->write( |Lock object instance not created| ).
         RETURN.
     ENDTRY.
 
@@ -39,18 +49,18 @@ CLASS zcl_ahr_lock_obj_univ IMPLEMENTATION.
         lo_lock_object->enqueue( it_parameter = lt_parameter ).
 
       CATCH cx_abap_foreign_lock.
-        out->write( |Foreign lock exception| ).
+        io_out->write( |Foreign lock exception| ).
       CATCH cx_abap_lock_failure.
-        out->write( |Not possible to write on the database. Object is locked| ).
+        io_out->write( |Not possible to write on the database. Object is locked| ).
     ENDTRY.
 
-    out->write( |Lock object is active| ).
+    io_out->write( |Lock object is active| ).
 
     DATA ls_record TYPE zahr_university.
 
     ls_record = VALUE zahr_university( client       = sy-mandt
                                        soc          = '1000'
-                                       exercise     = '2020'
+                                       exercise     = '2024'
                                        student_id   = 'A001'
                                        first_name   = 'Liam'
                                        last_name    = 'Neeson'
@@ -64,16 +74,34 @@ CLASS zcl_ahr_lock_obj_univ IMPLEMENTATION.
 
     MODIFY zahr_university FROM @ls_record.
     IF  sy-subrc = 0.
-      out->write( |Business objec was uploaded on the DDBB| ).
+      io_out->write( |Business objec was uploaded on the DDBB| ).
     ENDIF.
 
     TRY.
         lo_lock_object->dequeue( it_parameter = lt_parameter ).
       CATCH cx_abap_lock_failure.
-        out->write( |LOCK OBJECT was NOT released| ).
+        io_out->write( |LOCK OBJECT was NOT released| ).
     ENDTRY.
 
-    out->write( |Lock object was released| ).
+    io_out->write( |Lock object was released| ).
+
+  ENDMETHOD.
+
+  METHOD sql_query_univ.
+
+    io_out->write( |Query: Dynamic Cache| ).
+
+    SELECT FROM zahr_university
+    FIELDS soc,
+           exercise,
+           currency,
+           SUM( course_price ) AS course_price
+     GROUP BY soc,
+              exercise,
+              currency
+      INTO TABLE @DATA(lt_univ).
+
+    io_out->write( lt_univ ).
 
   ENDMETHOD.
 

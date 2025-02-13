@@ -48,7 +48,7 @@ CLASS zcl_ahr_insert_univ IMPLEMENTATION.
                                 unit         = 'UN' )
                               ( client       = sy-mandt
                                 soc          = '2000'
-                                exercise     = '2020'
+                                exercise     = '2021'
                                 student_id   = 'A002'
                                 first_name   = 'Bruce'
                                 last_name    = 'Willis'
@@ -59,7 +59,7 @@ CLASS zcl_ahr_insert_univ IMPLEMENTATION.
                                 unit         = 'UN' )
                               ( client       = sy-mandt
                                 soc          = '3000'
-                                exercise     = '2020'
+                                exercise     = '2022'
                                 student_id   = 'A003'
                                 first_name   = 'Jim'
                                 last_name    = 'Carrey'
@@ -70,7 +70,7 @@ CLASS zcl_ahr_insert_univ IMPLEMENTATION.
                                 unit         = 'UN' )
                               ( client       = sy-mandt
                                 soc          = '4000'
-                                exercise     = '2020'
+                                exercise     = '2023'
                                 student_id   = 'A004'
                                 first_name   = 'Will'
                                 last_name    = 'Smith'
@@ -81,7 +81,19 @@ CLASS zcl_ahr_insert_univ IMPLEMENTATION.
                                 unit         = 'UN' )
                               ( client       = sy-mandt
                                 soc          = '5000'
-                                exercise     = '2020'
+                                exercise     = '2024'
+                                student_id   = 'A005'
+                                first_name   = 'Jason'
+                                last_name    = 'Statham'
+                                course_code  = 'E1'
+                                course_price = 5000
+                                currency     = 'MXN'
+                                courses      = 1
+                                unit         = 'UN' )
+
+                              ( client       = sy-mandt
+                                soc          = '1000'
+                                exercise     = '2024'
                                 student_id   = 'A005'
                                 first_name   = 'Jason'
                                 last_name    = 'Statham'
