@@ -13,6 +13,7 @@ CLASS zcl_ahr_lock_obj_univ DEFINITION
     METHODS lock_object_univ IMPORTING io_out TYPE REF TO if_oo_adt_classrun_out.
     METHODS sql_query_univ IMPORTING io_out TYPE REF TO if_oo_adt_classrun_out.
 
+
 ENDCLASS.
 
 
@@ -59,7 +60,7 @@ CLASS zcl_ahr_lock_obj_univ IMPLEMENTATION.
     DATA ls_record TYPE zahr_university.
 
     ls_record = VALUE zahr_university( client       = sy-mandt
-                                       soc          = '1000'
+                                       soc          = '2000'
                                        exercise     = '2024'
                                        student_id   = 'A001'
                                        first_name   = 'Liam'
@@ -89,19 +90,12 @@ CLASS zcl_ahr_lock_obj_univ IMPLEMENTATION.
 
   METHOD sql_query_univ.
 
-    io_out->write( |Query: Dynamic Cache| ).
-
     SELECT FROM zahr_university
-    FIELDS soc,
-           exercise,
-           currency,
-           SUM( course_price ) AS course_price
-     GROUP BY soc,
-              exercise,
-              currency
-      INTO TABLE @DATA(lt_univ).
+    FIELDS COUNT( * ) as count_2
+     WHERE exercise = '2024'
+      INTO @DATA(lv_dynamic).
 
-    io_out->write( lt_univ ).
+    io_out->write( lv_dynamic ).
 
   ENDMETHOD.
 
