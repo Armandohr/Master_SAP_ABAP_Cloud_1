@@ -12,7 +12,8 @@ ENDCLASS.
 
 
 
-CLASS zcl_ahr_ac1_emp_logali IMPLEMENTATION.
+CLASS ZCL_AHR_AC1_EMP_LOGALI IMPLEMENTATION.
+
 
   METHOD if_oo_adt_classrun~main.
 
@@ -107,5 +108,4 @@ CLASS zcl_ahr_ac1_emp_logali IMPLEMENTATION.
     ENDIF.
 
   ENDMETHOD.
-
 ENDCLASS.

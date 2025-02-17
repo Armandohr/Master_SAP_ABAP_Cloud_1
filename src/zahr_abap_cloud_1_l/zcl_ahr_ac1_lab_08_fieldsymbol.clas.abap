@@ -21,68 +21,9 @@ CLASS zcl_ahr_ac1_lab_08_fieldsymbol DEFINITION
 ENDCLASS.
 
 
-CLASS zcl_ahr_ac1_lab_08_fieldsymbol IMPLEMENTATION.
 
-  METHOD if_oo_adt_classrun~main.
+CLASS ZCL_AHR_AC1_LAB_08_FIELDSYMBOL IMPLEMENTATION.
 
-    "1. Declarations
-    declaration( io_out = out ).
-
-    "2. Online declarations
-    online_declaration( io_out = out ).
-
-    "3. Add record
-    add_record( io_out = out ).
-
-    "4. Insert record
-    insert_record( io_out = out ).
-
-    "5. Read record
-    read_record( io_out = out ).
-
-    "6. Coercion - Casting
-    coercion_casting( io_out = out ).
-
-  ENDMETHOD.
-
-  METHOD declaration.
-
-    io_out->write( to_upper( |--> declaration <--| ) ).
-
-    DATA: lv_employee TYPE string VALUE 'Francisco Villa'.
-    FIELD-SYMBOLS: <lf_employee> TYPE string.
-
-    io_out->write( data = lv_employee
-                   name = 'lv_employee' ).
-
-    ASSIGN lv_employee TO <lf_employee>.
-
-    <lf_employee> = 'Emiliano Zapata'.
-
-    io_out->write( data = lv_employee
-                   name = 'lv_employee' ).
-
-  ENDMETHOD.
-
-  METHOD online_declaration.
-
-    io_out->write( to_upper( |--> online_declaration <--| ) ).
-
-    SELECT FROM zahr_emp_logali
-    FIELDS *
-      INTO TABLE @DATA(lt_employees).
-
-    io_out->write( data = lt_employees
-                   name = 'lt_employees' ).
-
-    LOOP AT lt_employees ASSIGNING FIELD-SYMBOL(<ls_employees>).
-      <ls_employees>-email = 'NUEVO_CORREO@SERVIDOR.COM'.
-    ENDLOOP.
-
-    io_out->write( data = lt_employees
-                   name = 'lt_employees' ).
-
-  ENDMETHOD.
 
   METHOD add_record.
 
@@ -110,6 +51,69 @@ CLASS zcl_ahr_ac1_lab_08_fieldsymbol IMPLEMENTATION.
 
   ENDMETHOD.
 
+
+  METHOD coercion_casting.
+
+    io_out->write( to_upper( |--> coercion_casting <--| ) ).
+
+    DATA: lv_date TYPE d.
+    FIELD-SYMBOLS: <lf_date> TYPE n.
+
+    ASSIGN lv_date TO <lf_date> CASTING.
+
+    IF <lf_date> IS ASSIGNED.
+      <lf_date> = cl_abap_context_info=>get_system_date(  ).
+    ENDIF.
+
+    io_out->write( data = lv_date
+                   name = 'lv_date' ).
+
+  ENDMETHOD.
+
+
+  METHOD declaration.
+
+    io_out->write( to_upper( |--> declaration <--| ) ).
+
+    DATA: lv_employee TYPE string VALUE 'Francisco Villa'.
+    FIELD-SYMBOLS: <lf_employee> TYPE string.
+
+    io_out->write( data = lv_employee
+                   name = 'lv_employee' ).
+
+    ASSIGN lv_employee TO <lf_employee>.
+
+    <lf_employee> = 'Emiliano Zapata'.
+
+    io_out->write( data = lv_employee
+                   name = 'lv_employee' ).
+
+  ENDMETHOD.
+
+
+  METHOD if_oo_adt_classrun~main.
+
+    "1. Declarations
+    declaration( io_out = out ).
+
+    "2. Online declarations
+    online_declaration( io_out = out ).
+
+    "3. Add record
+    add_record( io_out = out ).
+
+    "4. Insert record
+    insert_record( io_out = out ).
+
+    "5. Read record
+    read_record( io_out = out ).
+
+    "6. Coercion - Casting
+    coercion_casting( io_out = out ).
+
+  ENDMETHOD.
+
+
   METHOD insert_record.
 
     io_out->write( to_upper( |--> insert_record <--| ) ).
@@ -136,6 +140,28 @@ CLASS zcl_ahr_ac1_lab_08_fieldsymbol IMPLEMENTATION.
 
   ENDMETHOD.
 
+
+  METHOD online_declaration.
+
+    io_out->write( to_upper( |--> online_declaration <--| ) ).
+
+    SELECT FROM zahr_emp_logali
+    FIELDS *
+      INTO TABLE @DATA(lt_employees).
+
+    io_out->write( data = lt_employees
+                   name = 'lt_employees' ).
+
+    LOOP AT lt_employees ASSIGNING FIELD-SYMBOL(<ls_employees>).
+      <ls_employees>-email = 'NUEVO_CORREO@SERVIDOR.COM'.
+    ENDLOOP.
+
+    io_out->write( data = lt_employees
+                   name = 'lt_employees' ).
+
+  ENDMETHOD.
+
+
   METHOD read_record.
 
     io_out->write( to_upper( |--> read_record <--| ) ).
@@ -156,23 +182,4 @@ CLASS zcl_ahr_ac1_lab_08_fieldsymbol IMPLEMENTATION.
                    name = 'lt_employees' ).
 
   ENDMETHOD.
-
-  METHOD coercion_casting.
-
-    io_out->write( to_upper( |--> coercion_casting <--| ) ).
-
-    DATA: lv_date TYPE d.
-    FIELD-SYMBOLS: <lf_date> TYPE n.
-
-    ASSIGN lv_date TO <lf_date> CASTING.
-
-    IF <lf_date> IS ASSIGNED.
-      <lf_date> = cl_abap_context_info=>get_system_date(  ).
-    ENDIF.
-
-    io_out->write( data = lv_date
-                   name = 'lv_date' ).
-
-  ENDMETHOD.
-
 ENDCLASS.

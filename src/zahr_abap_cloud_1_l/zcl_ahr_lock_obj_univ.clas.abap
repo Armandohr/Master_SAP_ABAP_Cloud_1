@@ -18,7 +18,8 @@ ENDCLASS.
 
 
 
-CLASS zcl_ahr_lock_obj_univ IMPLEMENTATION.
+CLASS ZCL_AHR_LOCK_OBJ_UNIV IMPLEMENTATION.
+
 
   METHOD if_oo_adt_classrun~main.
 
@@ -27,6 +28,7 @@ CLASS zcl_ahr_lock_obj_univ IMPLEMENTATION.
     sql_query_univ( io_out = out ).
 
   ENDMETHOD.
+
 
   METHOD lock_object_univ.
 
@@ -88,6 +90,7 @@ CLASS zcl_ahr_lock_obj_univ IMPLEMENTATION.
 
   ENDMETHOD.
 
+
   METHOD sql_query_univ.
 
     SELECT FROM zahr_university
@@ -98,5 +101,4 @@ CLASS zcl_ahr_lock_obj_univ IMPLEMENTATION.
     io_out->write( lv_dynamic ).
 
   ENDMETHOD.
-
 ENDCLASS.

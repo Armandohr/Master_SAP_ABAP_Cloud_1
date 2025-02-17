@@ -10,7 +10,8 @@ CLASS zcl_ahr_ac1_lab_01_var DEFINITION
 ENDCLASS.
 
 
-CLASS zcl_ahr_ac1_lab_01_var IMPLEMENTATION.
+
+CLASS ZCL_AHR_AC1_LAB_01_VAR IMPLEMENTATION.
 
 
   METHOD if_oo_adt_classrun~main.

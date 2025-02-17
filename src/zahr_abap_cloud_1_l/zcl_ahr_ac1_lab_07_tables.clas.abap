@@ -14,7 +14,10 @@ CLASS zcl_ahr_ac1_lab_07_tables DEFINITION
 ENDCLASS.
 
 
-CLASS zcl_ahr_ac1_lab_07_tables IMPLEMENTATION.
+
+CLASS ZCL_AHR_AC1_LAB_07_TABLES IMPLEMENTATION.
+
+
   METHOD if_oo_adt_classrun~main.
     " 1.    Añadir registros
     DATA lt_employees TYPE STANDARD TABLE OF zahr_emp_logali.
@@ -181,5 +184,4 @@ CLASS zcl_ahr_ac1_lab_07_tables IMPLEMENTATION.
                   name = '<ls_spfli>' ).
     ENDLOOP.
   ENDMETHOD.
-
 ENDCLASS.

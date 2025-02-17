@@ -17,7 +17,10 @@ CLASS zcl_ahr_insert_univ DEFINITION
 
 ENDCLASS.
 
-CLASS zcl_ahr_insert_univ IMPLEMENTATION.
+
+
+CLASS ZCL_AHR_INSERT_UNIV IMPLEMENTATION.
+
 
   METHOD if_oo_adt_classrun~main.
 
@@ -32,6 +35,7 @@ CLASS zcl_ahr_insert_univ IMPLEMENTATION.
     ENDIF.
 
   ENDMETHOD.
+
 
   METHOD load_records.
 
@@ -104,5 +108,4 @@ CLASS zcl_ahr_insert_univ IMPLEMENTATION.
                                 unit         = 'UN' ) ).
 
   ENDMETHOD.
-
 ENDCLASS.

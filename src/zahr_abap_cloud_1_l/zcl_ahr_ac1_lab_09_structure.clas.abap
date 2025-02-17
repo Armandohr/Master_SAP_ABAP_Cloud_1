@@ -49,7 +49,10 @@ CLASS zcl_ahr_ac1_lab_09_structure DEFINITION
 
 ENDCLASS.
 
-CLASS zcl_ahr_ac1_lab_09_structure IMPLEMENTATION.
+
+
+CLASS ZCL_AHR_AC1_LAB_09_STRUCTURE IMPLEMENTATION.
+
 
   METHOD if_oo_adt_classrun~main.
 
@@ -97,5 +100,4 @@ CLASS zcl_ahr_ac1_lab_09_structure IMPLEMENTATION.
     out->write( data = ls_nested name = 'Deep structure cleaned.' ).
 
   ENDMETHOD.
-
 ENDCLASS.
