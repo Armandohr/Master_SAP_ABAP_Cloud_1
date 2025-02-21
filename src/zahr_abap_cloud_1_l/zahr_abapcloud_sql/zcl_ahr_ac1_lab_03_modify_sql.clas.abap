@@ -21,7 +21,7 @@ CLASS zcl_ahr_ac1_lab_03_modify_sql IMPLEMENTATION.
 
   METHOD if_oo_adt_classrun~main.
 
-*    modify_record( io_out = out ).
+    modify_record( io_out = out ).
 
     modify_multiple_records( io_out = out ).
 
