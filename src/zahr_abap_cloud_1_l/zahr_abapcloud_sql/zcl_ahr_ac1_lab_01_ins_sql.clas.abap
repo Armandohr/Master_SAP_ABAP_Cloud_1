@@ -23,8 +23,8 @@ CLASS zcl_ahr_ac1_lab_01_ins_sql IMPLEMENTATION.
 
   METHOD if_oo_adt_classrun~main.
 
-*    insert_record( out ).
-*    insert_multiple_records( out ).
+    insert_record( out ).
+    insert_multiple_records( out ).
     insert_records_exception( out ).
 
   ENDMETHOD.
@@ -62,31 +62,31 @@ CLASS zcl_ahr_ac1_lab_01_ins_sql IMPLEMENTATION.
     lt_products = VALUE #( ( client       = sy-mandt
                              product_id   = '1'
                              product_name = 'Computadora'
-                             category_id  = '1234'
+                             category_id  = '1'
                              quantity     = '1'
                              price        = '1500' )
                            ( client       = sy-mandt
                              product_id   = '2'
                              product_name = 'Monitor'
-                             category_id  = '1235'
+                             category_id  = '2'
                              quantity     = '2'
                              price        = '4000' )
                            ( client       = sy-mandt
                              product_id   = '3'
                              product_name = 'Teclador'
-                             category_id  = '1236'
+                             category_id  = '1'
                              quantity     = '1'
                              price        = '300' )
                            ( client       = sy-mandt
                              product_id   = '4'
                              product_name = 'Mouse'
-                             category_id  = '1237'
+                             category_id  = '2'
                              quantity     = '1'
                              price        = '50' )
                            ( client       = sy-mandt
                              product_id   = '5'
                              product_name = 'Escritorio'
-                             category_id  = '1238'
+                             category_id  = '3'
                              quantity     = '1'
                              price        = '400' ) ).
 
@@ -106,7 +106,7 @@ CLASS zcl_ahr_ac1_lab_01_ins_sql IMPLEMENTATION.
     lt_products = VALUE #( ( client       = sy-mandt
                              product_id   = '1'
                              product_name = 'Computadora'
-                             category_id  = '1234'
+                             category_id  = '1'
                              quantity     = '1'
                              price        = '1500' ) ).
 
