@@ -22,11 +22,11 @@ CLASS zcl_ahr_ac1_lab_02_upd_sql IMPLEMENTATION.
 
   METHOD if_oo_adt_classrun~main.
 
-*    update_record( io_out = out ).
+    update_record( io_out = out ).
 
-*    Update_multiple_records( io_out = out ).
+    Update_multiple_records( io_out = out ).
 
-*    update_columns( io_out = out ).
+    update_columns( io_out = out ).
 
     update_columns_expressions( io_out = out ).
 
