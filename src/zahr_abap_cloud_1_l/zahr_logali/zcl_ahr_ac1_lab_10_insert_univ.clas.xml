@@ -3,9 +3,9 @@
  <asx:abap xmlns:asx="http://www.sap.com/abapxml" version="1.0">
   <asx:values>
    <VSEOCLASS>
-    <CLSNAME>ZCL_AHR_LOCK_OBJ_UNIV</CLSNAME>
+    <CLSNAME>ZCL_AHR_AC1_LAB_10_INSERT_UNIV</CLSNAME>
     <LANGU>E</LANGU>
-    <DESCRIPT>Lock Object University</DESCRIPT>
+    <DESCRIPT>Data base tables</DESCRIPT>
     <STATE>1</STATE>
     <CLSCCINCL>X</CLSCCINCL>
     <FIXPT>X</FIXPT>
