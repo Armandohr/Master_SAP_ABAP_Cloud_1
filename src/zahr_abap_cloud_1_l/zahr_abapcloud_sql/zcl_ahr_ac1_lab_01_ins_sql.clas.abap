@@ -55,40 +55,56 @@ CLASS zcl_ahr_ac1_lab_01_ins_sql IMPLEMENTATION.
 
     io_out->write( |insert_multiple_records| ).
 
+    DATA lt_products_aux TYPE STANDARD TABLE OF zahr_products.
     DATA lt_products TYPE STANDARD TABLE OF zahr_products.
-
     DELETE FROM zahr_products.
 
-    lt_products = VALUE #( ( client       = sy-mandt
-                             product_id   = '1'
-                             product_name = 'Computadora'
-                             category_id  = '1'
-                             quantity     = '1'
-                             price        = '1500' )
-                           ( client       = sy-mandt
-                             product_id   = '2'
-                             product_name = 'Monitor'
-                             category_id  = '2'
-                             quantity     = '2'
-                             price        = '4000' )
-                           ( client       = sy-mandt
-                             product_id   = '3'
-                             product_name = 'Teclador'
-                             category_id  = '1'
-                             quantity     = '1'
-                             price        = '300' )
-                           ( client       = sy-mandt
-                             product_id   = '4'
-                             product_name = 'Mouse'
-                             category_id  = '2'
-                             quantity     = '1'
-                             price        = '50' )
-                           ( client       = sy-mandt
-                             product_id   = '5'
-                             product_name = 'Escritorio'
-                             category_id  = '3'
-                             quantity     = '1'
-                             price        = '400' ) ).
+    TRY.
+        DATA(lo_random) = cl_abap_random_int=>create( seed = cl_abap_random=>seed( )
+                                                      min  = 1
+                                                      max  = 8 ).
+
+        DO 10 TIMES.
+
+          DATA(lv_random_num) = lo_random->get_next( ).
+
+          lt_productS_aux = VALUE #( ( client       = sy-mandt
+                                   product_id   = |{ 1 + ( 5 * sy-index ) }|
+                                   product_name = 'Computadora'
+                                   category_id  = lv_random_num
+                                   quantity     = '1'
+                                   price        = '1500' )
+                                 ( client       = sy-mandt
+                                   product_id   = |{ 2 + ( 5 * sy-index ) }|
+                                   product_name = 'Monitor'
+                                   category_id  = lv_random_num
+                                   quantity     = '2'
+                                   price        = '4000' )
+                                 ( client       = sy-mandt
+                                   product_id   = |{ 3 + ( 5 * sy-index ) }|
+                                   product_name = 'Teclador'
+                                   category_id  = lv_random_num
+                                   quantity     = '1'
+                                   price        = '300' )
+                                 ( client       = sy-mandt
+                                   product_id   = |{ 4 + ( 5 * sy-index ) }|
+                                   product_name = 'Mouse'
+                                   category_id  = lv_random_num
+                                   quantity     = '1'
+                                   price        = '50' )
+                                 ( client       = sy-mandt
+                                   product_id   = |{ 5 + ( 5 * sy-index ) }|
+                                   product_name = 'Escritorio'
+                                   category_id  = lv_random_num
+                                   quantity     = '1'
+                                   price        = '400' ) ).
+
+          APPEND LINES OF lt_products_aux TO lt_products.
+
+        ENDDO.
+      CATCH cx_abap_random INTO DATA(lx_abap_random).
+        io_out->write( lx_abap_random->get_text(  ) ).
+    ENDTRY.
 
     INSERT zahr_products FROM TABLE @lt_products.
 
