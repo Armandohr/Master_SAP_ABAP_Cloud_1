@@ -88,13 +88,13 @@ CLASS zcl_ahr_ac1_lab_01_ins_sql IMPLEMENTATION.
                                    price        = '300' )
                                  ( client       = sy-mandt
                                    product_id   = |{ 4 + ( 5 * sy-index ) }|
-                                   product_name = 'Mouse'
+                                   product_name = 'MouSe'
                                    category_id  = lv_random_num
                                    quantity     = '1'
                                    price        = '50' )
                                  ( client       = sy-mandt
                                    product_id   = |{ 5 + ( 5 * sy-index ) }|
-                                   product_name = 'Escritorio'
+                                   product_name = 'Escritorio_Plegable'
                                    category_id  = lv_random_num
                                    quantity     = '1'
                                    price        = '400' ) ).
