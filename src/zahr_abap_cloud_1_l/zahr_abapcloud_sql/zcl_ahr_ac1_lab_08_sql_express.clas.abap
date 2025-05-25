@@ -16,9 +16,29 @@ CLASS zcl_ahr_ac1_lab_08_sql_express DEFINITION
 ENDCLASS.
 
 
+CLASS zcl_ahr_ac1_lab_08_sql_express IMPLEMENTATION.
+  METHOD if_oo_adt_classrun~main.
+    min_max( io_out = out ).
+    Avg_Sum( io_out = out ).
+    DISTINCT_Instruction( io_out = out ).
+    COUNT_Instruction( io_out = out ).
+    GROUP_BY_HAVING_Instruction( io_out = out ).
+    ORDER_BY_OFFSET_Instruction( io_out = out ).
+  ENDMETHOD.
 
-CLASS ZCL_AHR_AC1_LAB_08_SQL_EXPRESS IMPLEMENTATION.
+  METHOD min_max.
+    io_out->write( |Min/Max| ).
 
+    SELECT FROM zahr_products
+      FIELDS MIN( price ) AS MinPrice,
+             MAX( price ) AS MaxPrice
+      INTO @DATA(ls_price_products).
+
+    IF sy-subrc = 0.
+      io_out->write( data = ls_price_products
+                     name = |ls_price_products| ).
+    ENDIF.
+  ENDMETHOD.
 
   METHOD avg_sum.
     io_out->write( |Avg/Sum| ).
@@ -34,21 +54,6 @@ CLASS ZCL_AHR_AC1_LAB_08_SQL_EXPRESS IMPLEMENTATION.
     ENDIF.
   ENDMETHOD.
 
-
-  METHOD count_instruction.
-    io_out->write( |count_instruction| ).
-
-    SELECT FROM zahr_products
-      FIELDS COUNT( product_id ) AS Counter
-      INTO @DATA(ls_price_products).
-
-    IF sy-subrc = 0.
-      io_out->write( data = ls_price_products
-                     name = |ls_price_products| ).
-    ENDIF.
-  ENDMETHOD.
-
-
   METHOD distinct_instruction.
     io_out->write( |distinct instruction| ).
 
@@ -63,6 +68,18 @@ CLASS ZCL_AHR_AC1_LAB_08_SQL_EXPRESS IMPLEMENTATION.
     ENDIF.
   ENDMETHOD.
 
+  METHOD count_instruction.
+    io_out->write( |count_instruction| ).
+
+    SELECT FROM zahr_products
+      FIELDS COUNT( product_id ) AS Counter
+      INTO @DATA(ls_price_products).
+
+    IF sy-subrc = 0.
+      io_out->write( data = ls_price_products
+                     name = |ls_price_products| ).
+    ENDIF.
+  ENDMETHOD.
 
   METHOD group_by_having_instruction.
     io_out->write( |group_by_having_instruction| ).
@@ -80,32 +97,6 @@ CLASS ZCL_AHR_AC1_LAB_08_SQL_EXPRESS IMPLEMENTATION.
                      name = |lt_price_products| ).
     ENDIF.
   ENDMETHOD.
-
-
-  METHOD if_oo_adt_classrun~main.
-    min_max( io_out = out ).
-    Avg_Sum( io_out = out ).
-    DISTINCT_Instruction( io_out = out ).
-    COUNT_Instruction( io_out = out ).
-    GROUP_BY_HAVING_Instruction( io_out = out ).
-    ORDER_BY_OFFSET_Instruction( io_out = out ).
-  ENDMETHOD.
-
-
-  METHOD min_max.
-    io_out->write( |Min/Max| ).
-
-    SELECT FROM zahr_products
-      FIELDS MIN( price ) AS MinPrice,
-             MAX( price ) AS MaxPrice
-      INTO @DATA(ls_price_products).
-
-    IF sy-subrc = 0.
-      io_out->write( data = ls_price_products
-                     name = |ls_price_products| ).
-    ENDIF.
-  ENDMETHOD.
-
 
   METHOD order_by_offset_instruction.
     io_out->write( |order_by_offset_instruction| ).

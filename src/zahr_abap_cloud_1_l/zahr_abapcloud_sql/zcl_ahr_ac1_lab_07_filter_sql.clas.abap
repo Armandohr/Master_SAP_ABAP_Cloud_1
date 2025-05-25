@@ -22,50 +22,20 @@ CLASS zcl_ahr_ac1_lab_07_filter_sql DEFINITION
 
 ENDCLASS.
 
+CLASS zcl_ahr_ac1_lab_07_filter_sql IMPLEMENTATION.
 
+  METHOD if_oo_adt_classrun~main.
 
-CLASS ZCL_AHR_AC1_LAB_07_FILTER_SQL IMPLEMENTATION.
-
-
-  METHOD and_or_not_operator.
-
-    io_out->write( |and_or_not_operator| ).
-
-    SELECT FROM zahr_products
-    FIELDS product_name,
-           category_id,
-           price
-     WHERE ( category_id = 2
-        OR category_id = 10 )
-       AND price >= 100
-     ORDER BY product_id
-      INTO TABLE @DATA(lt_products).
-
-    IF sy-subrc = 0.
-      io_out->write( data = lt_products name = |lt_products| ).
-    ENDIF.
+    binary_relational_operators( io_out = out ).
+    between_instruction( io_out = out ).
+    Like_instruction( io_out = out ).
+    character_escape( io_out = out ).
+    IN_instruction( io_out = out ).
+    IN_range_table( io_out = out ).
+    NULL_Instruction( io_out = out ).
+    AND_OR_NOT_operator( io_out = out ).
 
   ENDMETHOD.
-
-
-  METHOD between_instruction.
-
-    io_out->write( |between_instruction| ).
-
-    SELECT FROM zahr_products
-    FIELDS product_id,
-           product_name,
-           price
-     WHERE price BETWEEN 100 AND 1000
-     ORDER BY product_id
-      INTO TABLE @DATA(lt_products).
-
-    IF sy-subrc = 0.
-      io_out->write( data = lt_products name = |lt_products| ).
-    ENDIF.
-
-  ENDMETHOD.
-
 
   METHOD binary_relational_operators.
 
@@ -85,6 +55,43 @@ CLASS ZCL_AHR_AC1_LAB_07_FILTER_SQL IMPLEMENTATION.
 
   ENDMETHOD.
 
+  METHOD between_instruction.
+
+    io_out->write( |between_instruction| ).
+
+    SELECT FROM zahr_products
+    FIELDS product_id,
+           product_name,
+           price
+     WHERE price BETWEEN 100 AND 1000
+     ORDER BY product_id
+      INTO TABLE @DATA(lt_products).
+
+    IF sy-subrc = 0.
+      io_out->write( data = lt_products name = |lt_products| ).
+    ENDIF.
+
+  ENDMETHOD.
+
+  METHOD like_instruction.
+
+    io_out->write( |like_instruction| ).
+
+    DATA lv_search_criteria TYPE string VALUE 'Mo%'. " '%S%'.
+
+    SELECT FROM zahr_products
+    FIELDS product_id,
+           product_name,
+           price
+     WHERE product_name LIKE @lv_search_criteria
+     ORDER BY product_id
+      INTO TABLE @DATA(lt_products).
+
+    IF sy-subrc = 0.
+      io_out->write( data = lt_products name = |lt_products| ).
+    ENDIF.
+
+  ENDMETHOD.
 
   METHOD character_escape.
 
@@ -108,21 +115,6 @@ CLASS ZCL_AHR_AC1_LAB_07_FILTER_SQL IMPLEMENTATION.
 
   ENDMETHOD.
 
-
-  METHOD if_oo_adt_classrun~main.
-
-    binary_relational_operators( io_out = out ).
-    between_instruction( io_out = out ).
-    Like_instruction( io_out = out ).
-    character_escape( io_out = out ).
-    IN_instruction( io_out = out ).
-    IN_range_table( io_out = out ).
-    NULL_Instruction( io_out = out ).
-    AND_OR_NOT_operator( io_out = out ).
-
-  ENDMETHOD.
-
-
   METHOD IN_instruction.
 
     io_out->write( |IN instruction| ).
@@ -140,7 +132,6 @@ CLASS ZCL_AHR_AC1_LAB_07_FILTER_SQL IMPLEMENTATION.
     ENDIF.
 
   ENDMETHOD.
-
 
   METHOD in_range_table.
 
@@ -165,28 +156,6 @@ CLASS ZCL_AHR_AC1_LAB_07_FILTER_SQL IMPLEMENTATION.
 
   ENDMETHOD.
 
-
-  METHOD like_instruction.
-
-    io_out->write( |like_instruction| ).
-
-    DATA lv_search_criteria TYPE string VALUE 'Mo%'. " '%S%'.
-
-    SELECT FROM zahr_products
-    FIELDS product_id,
-           product_name,
-           price
-     WHERE product_name LIKE @lv_search_criteria
-     ORDER BY product_id
-      INTO TABLE @DATA(lt_products).
-
-    IF sy-subrc = 0.
-      io_out->write( data = lt_products name = |lt_products| ).
-    ENDIF.
-
-  ENDMETHOD.
-
-
   METHOD null_instruction.
 
     io_out->write( |NULL instruction| ).
@@ -203,4 +172,25 @@ CLASS ZCL_AHR_AC1_LAB_07_FILTER_SQL IMPLEMENTATION.
     ENDIF.
 
   ENDMETHOD.
+
+  METHOD and_or_not_operator.
+
+    io_out->write( |and_or_not_operator| ).
+
+    SELECT FROM zahr_products
+    FIELDS product_name,
+           category_id,
+           price
+     WHERE ( category_id = 2
+        OR category_id = 10 )
+       AND price >= 100
+     ORDER BY product_id
+      INTO TABLE @DATA(lt_products).
+
+    IF sy-subrc = 0.
+      io_out->write( data = lt_products name = |lt_products| ).
+    ENDIF.
+
+  ENDMETHOD.
+
 ENDCLASS.

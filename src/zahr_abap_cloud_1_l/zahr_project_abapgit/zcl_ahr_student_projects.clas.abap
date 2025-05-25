@@ -17,17 +17,7 @@ CLASS zcl_ahr_student_projects DEFINITION
 
 ENDCLASS.
 
-
-
-CLASS ZCL_AHR_STUDENT_PROJECTS IMPLEMENTATION.
-
-
-  METHOD create_project.
-
-    ev_project = |{ iv_project_name } - { iv_project_description }|.
-
-  ENDMETHOD.
-
+CLASS zcl_ahr_student_projects IMPLEMENTATION.
 
   METHOD if_oo_adt_classrun~main.
 
@@ -38,4 +28,11 @@ CLASS ZCL_AHR_STUDENT_PROJECTS IMPLEMENTATION.
     out->write( lv_project ).
 
   ENDMETHOD.
+
+  METHOD create_project.
+
+    ev_project = |{ iv_project_name } - { iv_project_description }|.
+
+  ENDMETHOD.
+
 ENDCLASS.

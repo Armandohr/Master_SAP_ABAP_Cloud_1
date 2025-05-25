@@ -10,9 +10,13 @@ CLASS zcl_ahr_test_abapcleaner DEFINITION
 ENDCLASS.
 
 
+CLASS zcl_ahr_test_abapcleaner IMPLEMENTATION.
+  METHOD if_oo_adt_classrun~main.
+    " TODO: variable is assigned but never used (ABAP cleaner)
+    DATA lv_status TYPE string.
 
-CLASS ZCL_AHR_TEST_ABAPCLEANER IMPLEMENTATION.
-
+    get_data( IMPORTING ev_status = lv_status ).
+  ENDMETHOD.
 
   METHOD get_data.
     SELECT FROM /dmo/flight
@@ -24,13 +28,5 @@ CLASS ZCL_AHR_TEST_ABAPCLEANER IMPLEMENTATION.
     ELSE.
       ev_status = 'Error'.
     ENDIF.
-  ENDMETHOD.
-
-
-  METHOD if_oo_adt_classrun~main.
-    " TODO: variable is assigned but never used (ABAP cleaner)
-    DATA lv_status TYPE string.
-
-    get_data( IMPORTING ev_status = lv_status ).
   ENDMETHOD.
 ENDCLASS.

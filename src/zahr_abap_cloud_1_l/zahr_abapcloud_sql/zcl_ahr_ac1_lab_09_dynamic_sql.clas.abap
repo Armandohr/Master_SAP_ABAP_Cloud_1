@@ -21,10 +21,31 @@ CLASS zcl_ahr_ac1_lab_09_dynamic_sql DEFINITION
 
 ENDCLASS.
 
+CLASS zcl_ahr_ac1_lab_09_dynamic_sql IMPLEMENTATION.
+  METHOD if_oo_adt_classrun~main.
+    abap_sql_dynamic_specification( io_out = out ).
 
+    abap_sql_dynamic_programming( io_out = out ).
+  ENDMETHOD.
 
-CLASS ZCL_AHR_AC1_LAB_09_DYNAMIC_SQL IMPLEMENTATION.
+  METHOD abap_sql_dynamic_specification.
+    io_out->write( |abap_sql_dynamic_specification| ).
 
+    TRY.
+        SELECT
+          FROM (lv_datasource_name)
+          FIELDS (lv_selected_columns)
+          WHERE (lv_where_conditions)
+          INTO CORRESPONDING FIELDS OF TABLE @lt_products.
+        IF sy-subrc = 0.
+          io_out->write( lt_products ).
+        ENDIF.
+      CATCH cx_sy_dynamic_osql_syntax
+            cx_sy_dynamic_osql_semantics
+            cx_sy_dynamic_osql_error INTO DATA(lx_dynamic_osql).
+        io_out->write( lx_dynamic_osql->get_text( ) ).
+    ENDTRY.
+  ENDMETHOD.
 
   METHOD abap_sql_dynamic_programming.
     io_out->write( |abap_sql_dynamic_programming| ).
@@ -56,32 +77,5 @@ CLASS ZCL_AHR_AC1_LAB_09_DYNAMIC_SQL IMPLEMENTATION.
         io_out->write( lx_dynamic_osql->get_text( ) ).
         RETURN.
     ENDTRY.
-  ENDMETHOD.
-
-
-  METHOD abap_sql_dynamic_specification.
-    io_out->write( |abap_sql_dynamic_specification| ).
-
-    TRY.
-        SELECT
-          FROM (lv_datasource_name)
-          FIELDS (lv_selected_columns)
-          WHERE (lv_where_conditions)
-          INTO CORRESPONDING FIELDS OF TABLE @lt_products.
-        IF sy-subrc = 0.
-          io_out->write( lt_products ).
-        ENDIF.
-      CATCH cx_sy_dynamic_osql_syntax
-            cx_sy_dynamic_osql_semantics
-            cx_sy_dynamic_osql_error INTO DATA(lx_dynamic_osql).
-        io_out->write( lx_dynamic_osql->get_text( ) ).
-    ENDTRY.
-  ENDMETHOD.
-
-
-  METHOD if_oo_adt_classrun~main.
-    abap_sql_dynamic_specification( io_out = out ).
-
-    abap_sql_dynamic_programming( io_out = out ).
   ENDMETHOD.
 ENDCLASS.

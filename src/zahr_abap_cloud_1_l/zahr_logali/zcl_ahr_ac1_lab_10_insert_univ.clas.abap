@@ -9,7 +9,6 @@ CLASS zcl_ahr_ac1_lab_10_insert_univ DEFINITION
 
     TYPES: tt_records_university TYPE STANDARD TABLE OF zahr_university.
 
-protected section.
   PRIVATE SECTION.
 
     DATA: lt_zahr_university TYPE STANDARD TABLE OF zahr_university.

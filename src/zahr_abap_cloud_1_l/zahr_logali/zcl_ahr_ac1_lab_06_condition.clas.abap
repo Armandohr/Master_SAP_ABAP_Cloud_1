@@ -7,7 +7,6 @@ CLASS zcl_ahr_ac1_lab_06_condition DEFINITION
 
     INTERFACES if_oo_adt_classrun.
 
-protected section.
   PRIVATE SECTION.
     METHODS if_method IMPORTING io_out         TYPE REF TO if_oo_adt_classrun_out
                                 iv_conditional TYPE i.
