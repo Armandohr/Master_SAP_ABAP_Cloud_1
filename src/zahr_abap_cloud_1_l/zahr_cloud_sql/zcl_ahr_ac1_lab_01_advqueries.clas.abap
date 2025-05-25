@@ -25,74 +25,10 @@ CLASS zcl_ahr_ac1_lab_01_advqueries DEFINITION
 
 ENDCLASS.
 
-CLASS zcl_ahr_ac1_lab_01_advqueries IMPLEMENTATION.
 
-  METHOD if_oo_adt_classrun~main.
 
-    inline_declaration( io_out = out ).
-    specifying_columns( io_out = out ).
-    Host_Variables( io_out = out ).
-    Case( io_out = out ).
-    Global_Temporary_Tables( io_out = out ).
-    SubQuery_WITH( io_out = out ).
-    SubQuery_Ins_Mod( io_out = out ).
-    Database_Hits( io_out = out ).
-    Union( io_out = out ).
-    Intersect( io_out = out ).
-    Except( io_out = out ).
+CLASS ZCL_AHR_AC1_LAB_01_ADVQUERIES IMPLEMENTATION.
 
-  ENDMETHOD.
-
-  METHOD inline_declaration.
-
-    io_out->write( |{ cl_abap_char_utilities=>newline } inline_declaration| ).
-
-    SELECT FROM /dmo/flight
-    FIELDS *
-     WHERE price GT 500
-      INTO TABLE @DATA(lt_flights).
-
-    IF sy-subrc = 0.
-      io_out->write( data = lt_flights name = |lt_flights| ).
-    ENDIF.
-
-  ENDMETHOD.
-
-  METHOD specifying_columns.
-
-    io_out->write( |{ cl_abap_char_utilities=>newline } specifying_columns| ).
-
-    SELECT FROM /DMO/Flight
-    FIELDS carrier_id,
-           connection_id
-     WHERE price GT 500
-      INTO TABLE @DATA(lt_flights).
-
-    IF sy-subrc = 0.
-      io_out->write( data = lt_flights name = |lt_flights| ).
-    ENDIF.
-
-  ENDMETHOD.
-
-  METHOD host_variables.
-
-    io_out->write( |{ cl_abap_char_utilities=>newline } host_variables| ).
-
-    DATA:
-      lv_price   TYPE /dmo/flight_price VALUE 500,
-      lv_carrier TYPE /dmo/carrier_id   VALUE 'LH'.
-
-    SELECT FROM /dmo/flight
-    FIELDS *
-     WHERE carrier_id EQ @lv_carrier
-       AND price      GT @lv_price
-      INTO TABLE @DATA(lt_flights).
-
-    IF sy-subrc = 0.
-      io_out->write( data = lt_flights name = |lt_flights| ).
-    ENDIF.
-
-  ENDMETHOD.
 
   METHOD case.
 
@@ -115,6 +51,51 @@ CLASS zcl_ahr_ac1_lab_01_advqueries IMPLEMENTATION.
     ENDIF.
 
   ENDMETHOD.
+
+
+  METHOD database_hits.
+
+    io_out->write( |{ cl_abap_char_utilities=>newline } database_hits| ).
+
+    " Select flights with database hint
+    SELECT FROM /dmo/flight
+    FIELDS carrier_id, connection_id, price
+   %_HINTS ORACLE 'INDEX(/dmo/flight~carrier_id)'
+*   %_HINTS HDB 'INDEX(/dmo/flight~carrier_id)'
+      INTO TABLE @DATA(lt_optimized_flights).
+
+    " Display results
+    IF lt_optimized_flights IS NOT INITIAL.
+      io_out->write( lt_optimized_flights ).
+    ENDIF.
+
+  ENDMETHOD.
+
+
+  METHOD except.
+
+    io_out->write( |{ cl_abap_char_utilities=>newline } except| ).
+
+    " Get rows using EXCEPT
+    SELECT FROM /dmo/flight
+    FIELDS carrier_id,
+           connection_id,
+           price
+     WHERE price GT 4000
+    EXCEPT
+    SELECT FROM /dmo/flight
+    FIELDS carrier_id,
+           connection_id,
+           price
+    WHERE price GT 6000
+    INTO TABLE @DATA(lt_except_flights).
+    " Display results
+    IF lt_except_flights IS NOT INITIAL.
+      io_out->write( lt_except_flights ).
+    ENDIF.
+
+  ENDMETHOD.
+
 
   METHOD global_temporary_tables.
 
@@ -157,92 +138,60 @@ CLASS zcl_ahr_ac1_lab_01_advqueries IMPLEMENTATION.
 
   ENDMETHOD.
 
-  METHOD subquery_with.
 
-    io_out->write( |{ cl_abap_char_utilities=>newline } subquery_with| ).
+  METHOD host_variables.
 
-    " Define subquery using WITH clause
-    WITH +tmp_flights AS ( SELECT FROM /dmo/flight
-                           FIELDS carrier_id,
-                                  connection_id,
-                                  price
-                            WHERE price GT 500 )
+    io_out->write( |{ cl_abap_char_utilities=>newline } host_variables| ).
 
-    SELECT FROM +tmp_flights AS sp
-     INNER JOIN /dmo/flight AS sf
-        ON sp~carrier_id = sf~carrier_id
-       AND sp~connection_id = sf~connection_id
-    FIELDS sf~carrier_id, sf~connection_id, sf~price
-      INTO TABLE @DATA(lt_data_result).
+    DATA:
+      lv_price   TYPE /dmo/flight_price VALUE 500,
+      lv_carrier TYPE /dmo/carrier_id   VALUE 'LH'.
 
-    " Display results
-    IF lt_data_result IS NOT INITIAL.
-      io_out->write( lt_data_result ).
-    ENDIF.
-
-  ENDMETHOD.
-
-  METHOD subquery_ins_mod.
-
-    io_out->write( |{ cl_abap_char_utilities=>newline } subquery_ins_mod| ).
-
-    " Insert data using subquery
-    INSERT zahr_spfli FROM ( SELECT FROM /dmo/carrier
-                             FIELDS carrier_id,
-                                    name,
-                                    currency_code
-                              WHERE currency_code EQ 'EUR' ).
-
-    " Select data to verify insertion
-    SELECT FROM zahr_spfli
+    SELECT FROM /dmo/flight
     FIELDS *
-      INTO TABLE @DATA(lt_inserted_data).
+     WHERE carrier_id EQ @lv_carrier
+       AND price      GT @lv_price
+      INTO TABLE @DATA(lt_flights).
 
-    " Display results
-    IF lt_inserted_data IS NOT INITIAL.
-      io_out->write( lt_inserted_data ).
+    IF sy-subrc = 0.
+      io_out->write( data = lt_flights name = |lt_flights| ).
     ENDIF.
 
   ENDMETHOD.
 
-  METHOD database_hits.
 
-    io_out->write( |{ cl_abap_char_utilities=>newline } database_hits| ).
+  METHOD if_oo_adt_classrun~main.
 
-    " Select flights with database hint
+    inline_declaration( io_out = out ).
+    specifying_columns( io_out = out ).
+    Host_Variables( io_out = out ).
+    Case( io_out = out ).
+    Global_Temporary_Tables( io_out = out ).
+    SubQuery_WITH( io_out = out ).
+    SubQuery_Ins_Mod( io_out = out ).
+    Database_Hits( io_out = out ).
+    Union( io_out = out ).
+    Intersect( io_out = out ).
+    Except( io_out = out ).
+
+  ENDMETHOD.
+
+
+  METHOD inline_declaration.
+
+    io_out->write( |{ cl_abap_char_utilities=>newline } inline_declaration| ).
+
     SELECT FROM /dmo/flight
-    FIELDS carrier_id, connection_id, price
-   %_HINTS ORACLE 'INDEX(/dmo/flight~carrier_id)'
-*   %_HINTS HDB 'INDEX(/dmo/flight~carrier_id)'
-      INTO TABLE @DATA(lt_optimized_flights).
+    FIELDS *
+     WHERE price GT 500
+      INTO TABLE @DATA(lt_flights).
 
-    " Display results
-    IF lt_optimized_flights IS NOT INITIAL.
-      io_out->write( lt_optimized_flights ).
+    IF sy-subrc = 0.
+      io_out->write( data = lt_flights name = |lt_flights| ).
     ENDIF.
 
   ENDMETHOD.
 
-  METHOD union.
-
-    io_out->write( |{ cl_abap_char_utilities=>newline } union| ).
-
-    " Combine results using UNION
-    SELECT FROM /dmo/flight
-    FIELDS carrier_id, connection_id, price
-     WHERE price LT 4000
-     UNION
-    SELECT FROM /dmo/flight
-    FIELDS carrier_id, connection_id, price
-     WHERE price GT 6000
-      INTO TABLE @DATA(lt_union_flights).
-    " Display results
-    IF lt_union_flights IS NOT INITIAL.
-      io_out->write( lt_union_flights ).
-
-    ENDIF.
-
-  ENDMETHOD.
 
   METHOD intersect.
 
@@ -269,28 +218,92 @@ CLASS zcl_ahr_ac1_lab_01_advqueries IMPLEMENTATION.
 
   ENDMETHOD.
 
-  METHOD except.
 
-    io_out->write( |{ cl_abap_char_utilities=>newline } except| ).
+  METHOD specifying_columns.
 
-    " Get rows using EXCEPT
-    SELECT FROM /dmo/flight
+    io_out->write( |{ cl_abap_char_utilities=>newline } specifying_columns| ).
+
+    SELECT FROM /DMO/Flight
     FIELDS carrier_id,
-           connection_id,
-           price
-     WHERE price GT 4000
-    EXCEPT
-    SELECT FROM /dmo/flight
-    FIELDS carrier_id,
-           connection_id,
-           price
-    WHERE price GT 6000
-    INTO TABLE @DATA(lt_except_flights).
-    " Display results
-    IF lt_except_flights IS NOT INITIAL.
-      io_out->write( lt_except_flights ).
+           connection_id
+     WHERE price GT 500
+      INTO TABLE @DATA(lt_flights).
+
+    IF sy-subrc = 0.
+      io_out->write( data = lt_flights name = |lt_flights| ).
     ENDIF.
 
   ENDMETHOD.
 
+
+  METHOD subquery_ins_mod.
+
+    io_out->write( |{ cl_abap_char_utilities=>newline } subquery_ins_mod| ).
+
+    " Insert data using subquery
+    INSERT zahr_spfli FROM ( SELECT FROM /dmo/carrier
+                             FIELDS carrier_id,
+                                    name,
+                                    currency_code
+                              WHERE currency_code EQ 'EUR' ).
+
+    " Select data to verify insertion
+    SELECT FROM zahr_spfli
+    FIELDS *
+      INTO TABLE @DATA(lt_inserted_data).
+
+    " Display results
+    IF lt_inserted_data IS NOT INITIAL.
+      io_out->write( lt_inserted_data ).
+    ENDIF.
+
+  ENDMETHOD.
+
+
+  METHOD subquery_with.
+
+    io_out->write( |{ cl_abap_char_utilities=>newline } subquery_with| ).
+
+    " Define subquery using WITH clause
+    WITH +tmp_flights AS ( SELECT FROM /dmo/flight
+                           FIELDS carrier_id,
+                                  connection_id,
+                                  price
+                            WHERE price GT 500 )
+
+    SELECT FROM +tmp_flights AS sp
+     INNER JOIN /dmo/flight AS sf
+        ON sp~carrier_id = sf~carrier_id
+       AND sp~connection_id = sf~connection_id
+    FIELDS sf~carrier_id, sf~connection_id, sf~price
+      INTO TABLE @DATA(lt_data_result).
+
+    " Display results
+    IF lt_data_result IS NOT INITIAL.
+      io_out->write( lt_data_result ).
+    ENDIF.
+
+  ENDMETHOD.
+
+
+  METHOD union.
+
+    io_out->write( |{ cl_abap_char_utilities=>newline } union| ).
+
+    " Combine results using UNION
+    SELECT FROM /dmo/flight
+    FIELDS carrier_id, connection_id, price
+     WHERE price LT 4000
+     UNION
+    SELECT FROM /dmo/flight
+    FIELDS carrier_id, connection_id, price
+     WHERE price GT 6000
+      INTO TABLE @DATA(lt_union_flights).
+    " Display results
+    IF lt_union_flights IS NOT INITIAL.
+      io_out->write( lt_union_flights ).
+
+    ENDIF.
+
+  ENDMETHOD.
 ENDCLASS.

@@ -17,7 +17,10 @@ CLASS zcl_ahr_ac1_lab_03_modify_sql DEFINITION
 
 ENDCLASS.
 
-CLASS zcl_ahr_ac1_lab_03_modify_sql IMPLEMENTATION.
+
+
+CLASS ZCL_AHR_AC1_LAB_03_MODIFY_SQL IMPLEMENTATION.
+
 
   METHOD if_oo_adt_classrun~main.
 
@@ -27,30 +30,6 @@ CLASS zcl_ahr_ac1_lab_03_modify_sql IMPLEMENTATION.
 
   ENDMETHOD.
 
-  METHOD modify_record.
-
-    io_out->write( |--> Modify record <--| ).
-
-    SELECT SINGLE FROM zahr_products
-    FIELDS *
-     WHERE product_id = 1
-     INTO @DATA(ls_product).
-
-    io_out->write( data = ls_product name = 'ls_product' ).
-
-    ls_product-quantity = 60.
-    ls_product-price = '850.99'.
-
-    MODIFY zahr_products FROM @ls_product.
-
-    IF sy-subrc = 0.
-      io_out->write( |The record was modified correctly| ).
-      io_out->write( data = ls_product name = 'ls_product' ).
-    ELSE.
-      io_out->write( |The record was NOT modified| ).
-    ENDIF.
-
-  ENDMETHOD.
 
   METHOD modify_multiple_records.
 
@@ -87,4 +66,29 @@ CLASS zcl_ahr_ac1_lab_03_modify_sql IMPLEMENTATION.
 
   ENDMETHOD.
 
+
+  METHOD modify_record.
+
+    io_out->write( |--> Modify record <--| ).
+
+    SELECT SINGLE FROM zahr_products
+    FIELDS *
+     WHERE product_id = 1
+     INTO @DATA(ls_product).
+
+    io_out->write( data = ls_product name = 'ls_product' ).
+
+    ls_product-quantity = 60.
+    ls_product-price = '850.99'.
+
+    MODIFY zahr_products FROM @ls_product.
+
+    IF sy-subrc = 0.
+      io_out->write( |The record was modified correctly| ).
+      io_out->write( data = ls_product name = 'ls_product' ).
+    ELSE.
+      io_out->write( |The record was NOT modified| ).
+    ENDIF.
+
+  ENDMETHOD.
 ENDCLASS.

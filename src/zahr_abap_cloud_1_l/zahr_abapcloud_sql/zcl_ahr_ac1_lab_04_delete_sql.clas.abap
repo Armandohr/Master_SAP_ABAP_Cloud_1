@@ -5,6 +5,7 @@ CLASS zcl_ahr_ac1_lab_04_delete_sql DEFINITION
   PUBLIC SECTION.
     INTERFACES if_oo_adt_classrun.
 
+protected section.
   PRIVATE SECTION.
     METHODS delete_record           IMPORTING io_out TYPE REF TO if_oo_adt_classrun_out.
     METHODS delete_multiple_records IMPORTING io_out TYPE REF TO if_oo_adt_classrun_out.
@@ -13,28 +14,9 @@ CLASS zcl_ahr_ac1_lab_04_delete_sql DEFINITION
 ENDCLASS.
 
 
-CLASS zcl_ahr_ac1_lab_04_delete_sql IMPLEMENTATION.
-  METHOD if_oo_adt_classrun~main.
-    delete_record( io_out = out ).
 
-    delete_multiple_records( io_out = out ).
+CLASS ZCL_AHR_AC1_LAB_04_DELETE_SQL IMPLEMENTATION.
 
-    delete_records_filters( io_out = out ).
-  ENDMETHOD.
-
-  METHOD delete_record.
-    io_out->write( |--> Delete record <--| ).
-
-    DATA(ls_product) = VALUE zahr_products( product_id = 1 ).
-
-    DELETE zahr_products FROM @ls_product.
-
-    IF sy-subrc = 0.
-      io_out->write( |Record deleted from the database| ).
-    ELSE.
-      io_out->write( |Record not available for deletion| ).
-    ENDIF.
-  ENDMETHOD.
 
   METHOD delete_multiple_records.
     io_out->write( |--> Delete multiple records <--| ).
@@ -64,6 +46,22 @@ CLASS zcl_ahr_ac1_lab_04_delete_sql IMPLEMENTATION.
     ENDTRY.
   ENDMETHOD.
 
+
+  METHOD delete_record.
+    io_out->write( |--> Delete record <--| ).
+
+    DATA(ls_product) = VALUE zahr_products( product_id = 1 ).
+
+    DELETE zahr_products FROM @ls_product.
+
+    IF sy-subrc = 0.
+      io_out->write( |Record deleted from the database| ).
+    ELSE.
+      io_out->write( |Record not available for deletion| ).
+    ENDIF.
+  ENDMETHOD.
+
+
   METHOD delete_records_filters.
     io_out->write( |--> Delete records using filters <--| ).
 
@@ -78,5 +76,14 @@ CLASS zcl_ahr_ac1_lab_04_delete_sql IMPLEMENTATION.
       CATCH cx_sy_open_sql_error INTO DATA(lo_cx_exception_sql).
         io_out->write( lo_cx_exception_sql->get_text( ) ).
     ENDTRY.
+  ENDMETHOD.
+
+
+  METHOD if_oo_adt_classrun~main.
+    delete_record( io_out = out ).
+
+    delete_multiple_records( io_out = out ).
+
+    delete_records_filters( io_out = out ).
   ENDMETHOD.
 ENDCLASS.

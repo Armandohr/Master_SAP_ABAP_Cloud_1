@@ -21,32 +21,20 @@ CLASS zcl_ahr_ac1_lab_03_cdshierarch DEFINITION
 
 ENDCLASS.
 
-CLASS zcl_ahr_ac1_lab_03_cdshierarch IMPLEMENTATION.
 
-  METHOD if_oo_adt_classrun~main.
 
-    hierarchy_data_model( io_out = out ).
-    Hierarchy_CDS( io_out = out ).
-    Hierarchical_Selection( io_out = out ).
-    Path_Expression_Associations( io_out = out ).
-    CDS_with_parameters( io_out = out ).
+CLASS ZCL_AHR_AC1_LAB_03_CDSHIERARCH IMPLEMENTATION.
 
-  ENDMETHOD.
 
-  METHOD hierarchy_data_model.
+  METHOD cds_with_parameters.
 
-    io_out->write( |{ cl_abap_char_utilities=>newline } hierarchy_data_model| ).
+    io_out->write( |{ cl_abap_char_utilities=>newline } cds_with_parameters| ).
 
-    DATA lt_results TYPE TABLE OF zahr_avi_parent.
-    " Hierarchies and Path Expressions
-    DELETE FROM zahr_avi_parent.
+    " CDS with parameters
+    SELECT FROM zahr_cds_aviation( pId = @lc_var )
+    FIELDS *
+      INTO TABLE @DATA(lt_results).
 
-    INSERT zahr_avi_parent FROM TABLE @( VALUE #( ( id = 1 parent_id = 0 aviation_name = 'Aviation 1' )
-                                                  ( id = 2 parent_id = 1 aviation_name = 'Aviation 2' )
-                                                  ( id = 3 parent_id = 2 aviation_name = 'Aviation 3' )
-                                                  ( id = 1 parent_id = 2 aviation_name = 'Aviation 1' ) ) ).
-
-    SELECT FROM zahr_avi_parent FIELDS * INTO TABLE @lt_results.
     " Display results
     IF lt_results IS NOT INITIAL.
       io_out->write( lt_results ).
@@ -54,34 +42,6 @@ CLASS zcl_ahr_ac1_lab_03_cdshierarch IMPLEMENTATION.
 
   ENDMETHOD.
 
-  METHOD hierarchy_cds.
-
-    io_out->write( |{ cl_abap_char_utilities=>newline } hierarchy_cds| ).
-
-    " Hierarchy – CDS
-    TRY.
-        SELECT FROM HIERARCHY( SOURCE zahr_cds_aviation( pId = @lc_var )
-         CHILD TO PARENT ASSOCIATION _Aviation
-         START WHERE id = 1
-      SIBLINGS ORDER BY id ASCENDING
-         DEPTH 2
-      MULTIPLE PARENTS ALLOWED
-        CYCLES BREAKUP )
-        FIELDS Id,
-               ParentId,
-               AviationName
-          INTO TABLE @DATA(lt_results).
-
-        " Display results
-        IF lt_results IS NOT INITIAL.
-          io_out->write( lt_results ).
-        ENDIF.
-
-      CATCH cx_sy_open_sql_db INTO DATA(lx_sql_db).
-        io_out->write( lx_sql_db->get_text( ) ).
-    ENDTRY.
-
-  ENDMETHOD.
 
   METHOD hierarchical_selection.
 
@@ -118,6 +78,70 @@ CLASS zcl_ahr_ac1_lab_03_cdshierarch IMPLEMENTATION.
 
   ENDMETHOD.
 
+
+  METHOD hierarchy_cds.
+
+    io_out->write( |{ cl_abap_char_utilities=>newline } hierarchy_cds| ).
+
+    " Hierarchy – CDS
+    TRY.
+        SELECT FROM HIERARCHY( SOURCE zahr_cds_aviation( pId = @lc_var )
+         CHILD TO PARENT ASSOCIATION _Aviation
+         START WHERE id = 1
+      SIBLINGS ORDER BY id ASCENDING
+         DEPTH 2
+      MULTIPLE PARENTS ALLOWED
+        CYCLES BREAKUP )
+        FIELDS Id,
+               ParentId,
+               AviationName
+          INTO TABLE @DATA(lt_results).
+
+        " Display results
+        IF lt_results IS NOT INITIAL.
+          io_out->write( lt_results ).
+        ENDIF.
+
+      CATCH cx_sy_open_sql_db INTO DATA(lx_sql_db).
+        io_out->write( lx_sql_db->get_text( ) ).
+    ENDTRY.
+
+  ENDMETHOD.
+
+
+  METHOD hierarchy_data_model.
+
+    io_out->write( |{ cl_abap_char_utilities=>newline } hierarchy_data_model| ).
+
+    DATA lt_results TYPE TABLE OF zahr_avi_parent.
+    " Hierarchies and Path Expressions
+    DELETE FROM zahr_avi_parent.
+
+    INSERT zahr_avi_parent FROM TABLE @( VALUE #( ( id = 1 parent_id = 0 aviation_name = 'Aviation 1' )
+                                                  ( id = 2 parent_id = 1 aviation_name = 'Aviation 2' )
+                                                  ( id = 3 parent_id = 2 aviation_name = 'Aviation 3' )
+                                                  ( id = 1 parent_id = 2 aviation_name = 'Aviation 1' ) ) ).
+
+    SELECT FROM zahr_avi_parent FIELDS * INTO TABLE @lt_results.
+    " Display results
+    IF lt_results IS NOT INITIAL.
+      io_out->write( lt_results ).
+    ENDIF.
+
+  ENDMETHOD.
+
+
+  METHOD if_oo_adt_classrun~main.
+
+    hierarchy_data_model( io_out = out ).
+    Hierarchy_CDS( io_out = out ).
+    Hierarchical_Selection( io_out = out ).
+    Path_Expression_Associations( io_out = out ).
+    CDS_with_parameters( io_out = out ).
+
+  ENDMETHOD.
+
+
   METHOD path_expression_associations.
 
     io_out->write( |{ cl_abap_char_utilities=>newline } path_expression_associations| ).
@@ -138,21 +162,4 @@ CLASS zcl_ahr_ac1_lab_03_cdshierarch IMPLEMENTATION.
     ENDIF.
 
   ENDMETHOD.
-
-  METHOD cds_with_parameters.
-
-    io_out->write( |{ cl_abap_char_utilities=>newline } cds_with_parameters| ).
-
-    " CDS with parameters
-    SELECT FROM zahr_cds_aviation( pId = @lc_var )
-    FIELDS *
-      INTO TABLE @DATA(lt_results).
-
-    " Display results
-    IF lt_results IS NOT INITIAL.
-      io_out->write( lt_results ).
-    ENDIF.
-
-  ENDMETHOD.
-
 ENDCLASS.

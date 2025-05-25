@@ -16,15 +16,10 @@ CLASS zcl_ahr_ac1_lab_05_commit_sql DEFINITION
 
 ENDCLASS.
 
-CLASS zcl_ahr_ac1_lab_05_commit_sql IMPLEMENTATION.
 
-  METHOD if_oo_adt_classrun~main.
 
-    commit_work( io_out = out ).
+CLASS ZCL_AHR_AC1_LAB_05_COMMIT_SQL IMPLEMENTATION.
 
-    rollback_work( io_out = out ).
-
-  ENDMETHOD.
 
   METHOD commit_work.
 
@@ -53,6 +48,16 @@ CLASS zcl_ahr_ac1_lab_05_commit_sql IMPLEMENTATION.
     ENDTRY.
 
   ENDMETHOD.
+
+
+  METHOD if_oo_adt_classrun~main.
+
+    commit_work( io_out = out ).
+
+    rollback_work( io_out = out ).
+
+  ENDMETHOD.
+
 
   METHOD rollback_work.
     io_out->write( |--> Rollback Work <--| ).
@@ -89,5 +94,4 @@ CLASS zcl_ahr_ac1_lab_05_commit_sql IMPLEMENTATION.
 
     ENDTRY.
   ENDMETHOD.
-
 ENDCLASS.

@@ -10,10 +10,9 @@ CLASS zcl_ahr_select_with_atc DEFINITION
 ENDCLASS.
 
 
-CLASS zcl_ahr_select_with_atc IMPLEMENTATION.
-  METHOD if_oo_adt_classrun~main.
-    out->write( me->get_data( ) ).
-  ENDMETHOD.
+
+CLASS ZCL_AHR_SELECT_WITH_ATC IMPLEMENTATION.
+
 
   METHOD get_data.
     SELECT FROM /dmo/flight
@@ -23,5 +22,10 @@ CLASS zcl_ahr_select_with_atc IMPLEMENTATION.
     IF sy-subrc = 0.
       rv_status = |Records consulted: { sy-dbcnt }| ##NO_TEXT.
     ENDIF.
+  ENDMETHOD.
+
+
+  METHOD if_oo_adt_classrun~main.
+    out->write( me->get_data( ) ).
   ENDMETHOD.
 ENDCLASS.

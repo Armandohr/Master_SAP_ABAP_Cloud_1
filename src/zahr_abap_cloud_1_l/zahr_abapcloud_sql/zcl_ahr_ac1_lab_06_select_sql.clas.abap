@@ -21,7 +21,10 @@ CLASS zcl_ahr_ac1_lab_06_select_sql DEFINITION
 
 ENDCLASS.
 
-CLASS zcl_ahr_ac1_lab_06_select_sql IMPLEMENTATION.
+
+
+CLASS ZCL_AHR_AC1_LAB_06_SELECT_SQL IMPLEMENTATION.
+
 
   METHOD if_oo_adt_classrun~main.
 
@@ -35,22 +38,6 @@ CLASS zcl_ahr_ac1_lab_06_select_sql IMPLEMENTATION.
 
   ENDMETHOD.
 
-  METHOD select_single.
-
-    io_out->write( |--> Select Single <--| ).
-
-    SELECT SINGLE FROM zahr_products
-    FIELDS *
-     WHERE product_id = 6
-      INTO @DATA(ls_product).
-
-    IF sy-subrc = 0.
-      io_out->write( data = ls_product-product_name name = |Product selected is:| ).
-    ELSE.
-      io_out->write( |No record selected| ).
-    ENDIF.
-
-  ENDMETHOD.
 
   METHOD select_bypassing_buffer.
 
@@ -68,6 +55,30 @@ CLASS zcl_ahr_ac1_lab_06_select_sql IMPLEMENTATION.
 
   ENDMETHOD.
 
+
+  METHOD select_endselect.
+
+    io_out->write( |--> Select Endselect <--| ).
+
+    DATA lt_products TYPE STANDARD TABLE OF zahr_products.
+
+    SELECT FROM zahr_products
+    FIELDS *
+     WHERE price >= 100
+       AND category_id = 5
+      INTO @DATA(ls_product).
+
+      APPEND ls_product TO lt_products.
+
+    ENDSELECT.
+
+    IF sy-subrc = 0.
+      io_out->write( data = lt_products name = |lt_products| ).
+    ENDIF.
+
+  ENDMETHOD.
+
+
   METHOD select_into_appending_table.
 
     io_out->write( |--> Select Into/Appending Table <--| ).
@@ -82,6 +93,7 @@ CLASS zcl_ahr_ac1_lab_06_select_sql IMPLEMENTATION.
     ENDIF.
 
   ENDMETHOD.
+
 
   METHOD select_into_corresponding.
 
@@ -107,43 +119,6 @@ CLASS zcl_ahr_ac1_lab_06_select_sql IMPLEMENTATION.
 
   ENDMETHOD.
 
-  METHOD select_up_to_n_rows.
-
-    io_out->write( |--> Select Up To n Rows <--| ).
-
-    SELECT FROM zahr_products
-    FIELDS *
-     WHERE category_id = 2
-      INTO TABLE @DATA(lt_products)
-        UP TO 3 ROWS.
-    IF sy-subrc = 0.
-      io_out->write( data = lt_products name = |lt_products| ).
-      io_out->write( data = lines( lt_products ) name = |Number of records found:| ).
-    ENDIF.
-
-  ENDMETHOD.
-
-  METHOD select_endselect.
-
-    io_out->write( |--> Select Endselect <--| ).
-
-    DATA lt_products TYPE STANDARD TABLE OF zahr_products.
-
-    SELECT FROM zahr_products
-    FIELDS *
-     WHERE price >= 100
-       AND category_id = 5
-      INTO @DATA(ls_product).
-
-      APPEND ls_product TO lt_products.
-
-    ENDSELECT.
-
-    IF sy-subrc = 0.
-      io_out->write( data = lt_products name = |lt_products| ).
-    ENDIF.
-
-  ENDMETHOD.
 
   METHOD select_package_size.
 
@@ -164,4 +139,38 @@ CLASS zcl_ahr_ac1_lab_06_select_sql IMPLEMENTATION.
 
   ENDMETHOD.
 
+
+  METHOD select_single.
+
+    io_out->write( |--> Select Single <--| ).
+
+    SELECT SINGLE FROM zahr_products
+    FIELDS *
+     WHERE product_id = 6
+      INTO @DATA(ls_product).
+
+    IF sy-subrc = 0.
+      io_out->write( data = ls_product-product_name name = |Product selected is:| ).
+    ELSE.
+      io_out->write( |No record selected| ).
+    ENDIF.
+
+  ENDMETHOD.
+
+
+  METHOD select_up_to_n_rows.
+
+    io_out->write( |--> Select Up To n Rows <--| ).
+
+    SELECT FROM zahr_products
+    FIELDS *
+     WHERE category_id = 2
+      INTO TABLE @DATA(lt_products)
+        UP TO 3 ROWS.
+    IF sy-subrc = 0.
+      io_out->write( data = lt_products name = |lt_products| ).
+      io_out->write( data = lines( lt_products ) name = |Number of records found:| ).
+    ENDIF.
+
+  ENDMETHOD.
 ENDCLASS.

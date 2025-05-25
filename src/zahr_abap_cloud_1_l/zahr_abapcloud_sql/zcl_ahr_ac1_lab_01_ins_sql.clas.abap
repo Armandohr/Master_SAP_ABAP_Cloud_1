@@ -19,7 +19,8 @@ ENDCLASS.
 
 
 
-CLASS zcl_ahr_ac1_lab_01_ins_sql IMPLEMENTATION.
+CLASS ZCL_AHR_AC1_LAB_01_INS_SQL IMPLEMENTATION.
+
 
   METHOD if_oo_adt_classrun~main.
 
@@ -29,27 +30,6 @@ CLASS zcl_ahr_ac1_lab_01_ins_sql IMPLEMENTATION.
 
   ENDMETHOD.
 
-  METHOD insert_record.
-
-    io_out->write( |insert_record| ).
-
-    DATA ls_products TYPE zahr_products.
-
-    DELETE FROM zahr_products.
-
-    ls_products = VALUE #( client       = sy-mandt
-                           product_id   = '1'
-                           product_name = 'Computadora'
-                           category_id  = '1234'
-                           quantity     = '1'
-                           price        = '1500' ).
-
-    INSERT zahr_products FROM @ls_products.
-
-    io_out->write( sy-dbcnt ).
-    io_out->write( ls_products ).
-
-  ENDMETHOD.
 
   METHOD insert_multiple_records.
 
@@ -113,6 +93,30 @@ CLASS zcl_ahr_ac1_lab_01_ins_sql IMPLEMENTATION.
 
   ENDMETHOD.
 
+
+  METHOD insert_record.
+
+    io_out->write( |insert_record| ).
+
+    DATA ls_products TYPE zahr_products.
+
+    DELETE FROM zahr_products.
+
+    ls_products = VALUE #( client       = sy-mandt
+                           product_id   = '1'
+                           product_name = 'Computadora'
+                           category_id  = '1234'
+                           quantity     = '1'
+                           price        = '1500' ).
+
+    INSERT zahr_products FROM @ls_products.
+
+    io_out->write( sy-dbcnt ).
+    io_out->write( ls_products ).
+
+  ENDMETHOD.
+
+
   METHOD insert_records_exception.
 
     io_out->write( |Insert records with exception handling.| ).
@@ -136,5 +140,4 @@ CLASS zcl_ahr_ac1_lab_01_ins_sql IMPLEMENTATION.
     ENDTRY.
 
   ENDMETHOD.
-
 ENDCLASS.

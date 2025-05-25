@@ -8,6 +8,7 @@ CLASS zcl_ahr_ac1_lab_05_invoice_ext DEFINITION
     DATA lv_regex     TYPE string VALUE '^[_a-z0-9-]+(\.[_a-z0-9-]+)*@[a-z0 9-]+(\.[a-z0-9-]+)*(\.[a-z]{2,4})$'.
     DATA lv_idcustome TYPE string.
 
+protected section.
   PRIVATE SECTION.
     METHODS overlay            IMPORTING io_out TYPE REF TO if_oo_adt_classrun_out.
     METHODS substring_function IMPORTING io_out TYPE REF TO if_oo_adt_classrun_out.

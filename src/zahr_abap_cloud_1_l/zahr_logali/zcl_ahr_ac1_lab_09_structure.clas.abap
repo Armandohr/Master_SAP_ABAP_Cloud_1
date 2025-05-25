@@ -42,6 +42,7 @@ CLASS zcl_ahr_ac1_lab_09_structure DEFINITION
             INCLUDE TYPE ty_airlines AS aero RENAMING WITH SUFFIX _aero.
     TYPES END OF ty_include_flights.
 
+protected section.
   PRIVATE SECTION.
     DATA ls_nested          TYPE ty_nested.
     DATA ls_deep            TYPE ty_deep.

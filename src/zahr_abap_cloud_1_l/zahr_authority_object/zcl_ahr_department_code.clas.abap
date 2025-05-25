@@ -13,7 +13,10 @@ CLASS zcl_ahr_department_code DEFINITION
 
 ENDCLASS.
 
-CLASS zcl_ahr_department_code IMPLEMENTATION.
+
+
+CLASS ZCL_AHR_DEPARTMENT_CODE IMPLEMENTATION.
+
 
   METHOD if_oo_adt_classrun~main.
 
@@ -30,5 +33,4 @@ CLASS zcl_ahr_department_code IMPLEMENTATION.
     ENDIF.
 
   ENDMETHOD.
-
 ENDCLASS.
