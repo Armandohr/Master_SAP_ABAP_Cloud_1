@@ -306,7 +306,7 @@ CLASS zcl_ahr_ac1_lab_02_sqlfunc IMPLEMENTATION.
     DELETE FROM zahr_spfli.
 
     INSERT zahr_spfli FROM ( SELECT FROM /dmo/flight
-                             FIELDS uuid( ) AS id,
+                             FIELDS "uuid( ) AS id,
                                     carrier_id,
                                     currency_code ).
 
